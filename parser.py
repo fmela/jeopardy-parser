@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from glob import glob
 
 import argparse
+import gzip
 import os
 import re
 import sqlite3
@@ -52,8 +53,8 @@ def main(args):
             FOREIGN KEY(clue_id) REFERENCES clues(id),
             FOREIGN KEY(category_id) REFERENCES categories(id)
         );""")
-    for i, file_name in enumerate(glob(os.path.join(args.dir, "*.html")), 1):
-        with open(os.path.abspath(file_name)) as f:
+    for i, file_name in enumerate(glob(os.path.join(args.dir, "*.html.gz")), 1):
+        with gzip.open(os.path.abspath(file_name)) as f:
             parse_game(f, sql, i)
     if not args.stdout:
         sql.commit()

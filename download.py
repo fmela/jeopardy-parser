@@ -1,6 +1,7 @@
 #!/usr/bin/env python -OO
 # -*- coding: utf-8 -*-
 
+import gzip
 import itertools
 import os
 import urllib2
@@ -50,7 +51,7 @@ def download_pages():
 
 
 def download_and_save_page(page):
-    new_file_name = "%s.html" % page
+    new_file_name = "%s.html.gz" % page
     destination_file_path = os.path.join(archive_folder, new_file_name)
     if not os.path.exists(destination_file_path):
         html = download_page(page)
@@ -83,8 +84,8 @@ def download_page(page):
 
 def save_file(html, filename):
     try:
-        with open(filename, 'w') as f:
-            f.write(html)
+	with gzip.open(filename, 'w') as f:
+	    f.write(html)
     except IOError:
         print "Couldn't write to file %s" % filename
 
